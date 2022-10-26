@@ -5,11 +5,12 @@ const checkValidator = (
   req: express.Request,
   res: express.Response,
   next: NextFunction
-) => {
+): void => {
   const error = validationResult(req);
   try {
     if (!error.isEmpty()) {
-      return res.status(420).json({ errors: error.array() });
+      res.status(420).json({ errors: error.array() });
+      return;
     }
   } catch (err) {
     console.log(err);

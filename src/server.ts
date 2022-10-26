@@ -3,6 +3,7 @@ import fs from 'fs';
 import { check } from 'express-validator';
 import resize from './utilities/resizeImage';
 import checkValidator from './utilities/checkValidator';
+import { join } from 'path';
 const app = express();
 const path = 'http://localhost';
 const port = 3600;
@@ -17,15 +18,21 @@ app.get(
       .withMessage('Only numbers is Allowed for height'),
   ],
   checkValidator,
-  (req: express.Request, res: express.Response) => {
+  (req: express.Request, res: express.Response): void => {
     const fileName = req.query.filename,
       width = req.query.width,
       height = req.query.height;
 
-    const checkImage = () => {
+    const checkImage = (): void => {
       if (
         fs.existsSync(
-          `build/public/images/thumb/${fileName}_${width}_${height}.jpg`
+          join(
+            __dirname,
+            'public',
+            'images',
+            'thumb',
+            `${fileName}_${width}_${height}.jpg`
+          )
         )
       ) {
         res
@@ -34,9 +41,11 @@ app.get(
             `<h3>'${fileName}.jpg' is resized before (width: ${width}px & height: ${height}px)</h3><img src="${path}:${port}/images/thumb/${fileName}_${width}_${height}.jpg" alt="${fileName}">`
           );
         return;
-      } else if (fs.existsSync(`build/public/images/${fileName}.jpg`)) {
-        if (!fs.existsSync(`build/public/images/thumb`)) {
-          fs.mkdirSync(`build/public/images/thumb`);
+      } else if (
+        fs.existsSync(join(__dirname, 'public', 'images', `${fileName}.jpg`))
+      ) {
+        if (!fs.existsSync(join(__dirname, 'public', 'images', 'thumb'))) {
+          fs.mkdirSync(join(__dirname, 'public', 'images', 'thumb'));
         }
         resize(fileName as string, width as string, height as string).then(
           (): void => {
@@ -48,7 +57,7 @@ app.get(
           }
         );
       } else {
-        return res.status(422).json({
+        res.status(422).json({
           errors: `Image with name '${fileName}.jpg' is not found, try again`,
         });
       }
@@ -58,8 +67,8 @@ app.get(
   }
 );
 
-app.use(express.static('./build/public'));
-app.listen(port, () => {
+app.use(express.static(join(__dirname, 'public')));
+app.listen(port, (): void => {
   console.log(`Server is running on ${path}:${port}`);
 });
 
