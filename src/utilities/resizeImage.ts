@@ -6,23 +6,22 @@ const resize = async (
   width: string,
   height: string
 ): Promise<string> => {
-  let msg: string = "";
-  try{
-  await sharp(join(__dirname, '..', 'public', 'images', `${fileName}.jpg`))
-    .resize(Number(width), Number(height))
-    .toFile(
-      join(
-        __dirname,
-        '..',
-        'public',
-        'images',
-        'thumb',
-        `${fileName}_${width}_${height}.jpg`
-      )
-    );
-return msg = 'successfully resized'
-  } catch(err){
-    return msg = 'Error is found'
+  try {
+    await sharp(join(__dirname, '..', 'public', 'images', `${fileName}.jpg`))
+      .resize(Number(width), Number(height))
+      .toFile(
+        join(
+          __dirname,
+          '..',
+          'public',
+          'images',
+          'thumb',
+          `${fileName}_${width}_${height}.jpg`
+        )
+      );
+    return 'successfully resized';
+  } catch (err) {
+    return 'Error is found';
   }
-}
+};
 export default resize;
