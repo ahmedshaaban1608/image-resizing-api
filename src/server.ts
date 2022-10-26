@@ -57,9 +57,11 @@ app.get(
           }
         );
       } else {
-        res.status(422).json({
-          errors: `Image with name '${fileName}.jpg' is not found, try again`,
-        });
+        res
+          .status(422)
+          .send(
+            `Error: Image with name '${fileName}.jpg' is not found, try again`
+          );
       }
     };
 

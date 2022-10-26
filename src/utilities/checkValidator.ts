@@ -1,6 +1,5 @@
 import express, { NextFunction } from 'express';
 import { validationResult } from 'express-validator';
-
 const checkValidator = (
   req: express.Request,
   res: express.Response,
@@ -9,7 +8,11 @@ const checkValidator = (
   const error = validationResult(req);
   try {
     if (!error.isEmpty()) {
-      res.status(420).json({ errors: error.array() });
+      let errors = '';
+      error.array().forEach((e) => {
+        errors += e.msg + ' - ';
+      });
+      res.status(420).send(errors);
       return;
     }
   } catch (err) {
