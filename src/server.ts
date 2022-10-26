@@ -12,9 +12,11 @@ app.get(
   '/api/images',
   [
     check('filename').not().isEmpty().withMessage('file name cannot be empty'),
-    check('width').isNumeric({min: 10}).withMessage('Only numbers >= 10 is Allowed for width'),
+    check('width')
+      .isInt({ min: 10 })
+      .withMessage('Only numbers >= 10 is Allowed for width'),
     check('height')
-      .isNumeric({min: 10})
+      .isInt({ min: 10 })
       .withMessage('Only numbers >= 10 is Allowed for height'),
   ],
   checkValidator,
