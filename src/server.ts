@@ -12,10 +12,10 @@ app.get(
   '/api/images',
   [
     check('filename').not().isEmpty().withMessage('file name cannot be empty'),
-    check('width').isNumeric().withMessage('Only numbers is Allowed for width'),
+    check('width').isNumeric({min: 10}).withMessage('Only numbers >= 10 is Allowed for width'),
     check('height')
-      .isNumeric()
-      .withMessage('Only numbers is Allowed for height'),
+      .isNumeric({min: 10})
+      .withMessage('Only numbers >= 10 is Allowed for height'),
   ],
   checkValidator,
   (req: express.Request, res: express.Response): void => {
