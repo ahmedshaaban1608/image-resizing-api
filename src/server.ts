@@ -39,8 +39,14 @@ app.get(
       ) {
         res
           .status(200)
-          .send(
-            `<h3>'${fileName}.jpg' is resized before (width: ${width}px & height: ${height}px)</h3><img src="${path}:${port}/images/thumb/${fileName}_${width}_${height}.jpg" alt="${fileName}">`
+          .sendFile(
+            join(
+              __dirname,
+              'public',
+              'images',
+              'thumb',
+              `${fileName}_${width}_${height}.jpg`
+            )
           );
         return;
       } else if (
@@ -53,8 +59,14 @@ app.get(
           (): void => {
             res
               .status(200)
-              .send(
-                `<h3>'${fileName}.jpg' is successfully resized  (width: ${width}px & height: ${height}px)</h3><img src="${path}:${port}/images/thumb/${fileName}_${width}_${height}.jpg" alt="${fileName}">`
+              .sendFile(
+                join(
+                  __dirname,
+                  'public',
+                  'images',
+                  'thumb',
+                  `${fileName}_${width}_${height}.jpg`
+                )
               );
           }
         );

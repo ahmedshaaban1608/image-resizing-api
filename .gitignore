@@ -1,1 +1,5 @@
 node_modules
+build/public/images/thumb
+build/tests
+build/utilities
+build/server.js
